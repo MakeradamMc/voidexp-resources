@@ -1,0 +1,30 @@
+<input type="text" id="nickname" placeholder="Nuovo nickname" />
+<button onclick="inviaRichiesta(event)">Invia Richiesta</button>
+<p id="stato"></p>
+
+<script>
+async function inviaRichiesta(e) {
+  e.preventDefault();
+  const nickname = document.getElementById("nickname").value.trim();
+  const stato = document.getElementById("stato");
+
+  if (!nickname) {
+    stato.textContent = "❌ Inserisci un nickname.";
+    return;
+  }
+
+  stato.textContent = "⏳ Invio in corso...";
+
+  const risposta = await fetch("https://formspree.io/f/xpqydpyg", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ Nickname: nickname })
+  });
+
+  if (risposta.ok) {
+    stato.textContent = "✅ Richiesta inviata!";
+  } else {
+    stato.textContent = "❌ Errore nell'invio. Riprova.";
+  }
+}
+</script>
